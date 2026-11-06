@@ -183,6 +183,204 @@ public class baithuchanh56 {
             }
         } while (luaChon != 0); // Điều kiện lặp của Menu (Bài 3)
 
+        // =========================================================
+        // PHẦN VIẾT NỐI TIẾP: BÀI TẬP MỚI (MẢNG VÀ LIST)
+        // =========================================================
+        System.out.println("\n\n****************************************************");
+        System.out.println("*** CHÀO MỪNG ĐẾN VỚI PHẦN BÀI TẬP MẢNG VÀ LIST ***");
+        System.out.println("****************************************************");
+
+        // ===== BÀI 1 MỚI: MẢNG SỐ LƯỢNG CỦA 5 CUỐN SÁCH =====
+        System.out.println("\n--- BÀI 1: Mảng số lượng của 5 cuốn sách ---");
+        int[] soLuong = new int[5];
+        int tongSL = 0;
+        int maxSL = Integer.MIN_VALUE;
+
+        for (int i = 0; i < soLuong.length; i++) {
+            System.out.print("Nhập số lượng cuốn sách thứ " + (i + 1) + ": ");
+            soLuong[i] = Integer.parseInt(sc.nextLine());
+            tongSL += soLuong[i];
+            if (soLuong[i] > maxSL) {
+                maxSL = soLuong[i];
+            }
+        }
+
+        System.out.print("-> Hiển thị mảng số lượng: [");
+        for (int i = 0; i < soLuong.length; i++) {
+            System.out.print(soLuong[i] + (i < 4 ? ", " : ""));
+        }
+        System.out.println("]");
+        System.out.println("-> Tổng số lượng: " + tongSL);
+        System.out.println("-> Số lượng lớn nhất: " + maxSL);
+
+
+        // ===== BÀI 2 MỚI: ArrayList<String> LƯU MÃ SÁCH =====
+        System.out.println("\n--- BÀI 2: Quản lý mã sách bằng ArrayList<String> ---");
+        List<String> dsMaSach = new ArrayList<>();
+
+        // 1. Thêm mã sách
+        dsMaSach.add("S01");
+        dsMaSach.add("S02");
+        dsMaSach.add("S03");
+        System.out.println("Đã thêm 3 mã sách mẫu: S01, S02, S03");
+
+        // 2. Hiển thị
+        System.out.println("Danh sách mã sách hiện tại: " + dsMaSach);
+
+        // 3. Tìm mã sách
+        String maCanTim = "S02";
+        if (dsMaSach.contains(maCanTim)) {
+            System.out.println("-> Tìm thấy mã sách: " + maCanTim + " (Dùng hàm contains())");
+        } else {
+            System.out.println("-> Không tìm thấy mã sách: " + maCanTim);
+        }
+
+        // 4. Xóa mã sách
+        dsMaSach.remove("S02");
+        System.out.println("-> Đã xóa mã S02. Danh sách sau khi xóa: " + dsMaSach);
+
+
+        // ===== BÀI 3 & BÀI 4 MỚI: MENU HOÀN CHỈNH (CRUD) =====
+        System.out.println("\n--- BÀI 3 & 4: MENU QUẢN LÝ SÁCH NÂNG CAO ---");
+        List<Sach> danhSachNangCao = new ArrayList<>();
+        int luaChonMoi;
+
+        do {
+            System.out.println("\n========== MENU QUẢN LÝ THƯ VIỆN (MỚI) ==========");
+            System.out.println("1. Thêm sách");
+            System.out.println("2. Hiển thị sách");
+            System.out.println("3. Tìm sách theo mã");
+            System.out.println("4. Xóa sách theo mã");
+            System.out.println("5. Sửa thông tin sách");
+            System.out.println("6. Tính tổng số lượng");
+            System.out.println("7. Tính tổng giá trị");
+            System.out.println("8. Thoát chương trình hoàn toàn");
+            System.out.print("Nhập lựa chọn của bạn: ");
+            luaChonMoi = Integer.parseInt(sc.nextLine());
+
+            switch (luaChonMoi) {
+                case 1: // Thêm sách
+                    System.out.print("Nhập số lượng sách muốn thêm: ");
+                    int nMoi = Integer.parseInt(sc.nextLine());
+                    for (int i = 0; i < nMoi; i++) {
+                        System.out.println("\n--- Nhập thông tin sách thứ " + (i + 1) + " ---");
+                        Sach s = nhapSach(sc);
+                        if (s.isHopLe()) {
+                            danhSachNangCao.add(s);
+                            System.out.println("-> Thêm sách thành công!");
+                        } else {
+                            System.out.println("-> LỖI: Dữ liệu không hợp lệ! Bỏ qua.");
+                        }
+                    }
+                    break;
+
+                case 2: // Hiển thị
+                    if (danhSachNangCao.isEmpty()) {
+                        System.out.println("Danh sách trống!");
+                    } else {
+                        System.out.println("\n===== DANH SÁCH SÁCH (" + danhSachNangCao.size() + " cuốn) =====");
+                        for (Sach s : danhSachNangCao) {
+                            s.hienThi();
+                        }
+                    }
+                    break;
+
+                case 3: // Tìm sách
+                    if (danhSachNangCao.isEmpty()) {
+                        System.out.println("Danh sách trống!");
+                    } else {
+                        System.out.print("Nhập mã sách cần tìm: ");
+                        String maTim = sc.nextLine();
+                        boolean timThay = false;
+                        for (Sach s : danhSachNangCao) {
+                            if (s.maSach.equalsIgnoreCase(maTim)) {
+                                System.out.println("-> Đã tìm thấy:");
+                                s.hienThi();
+                                timThay = true;
+                                break;
+                            }
+                        }
+                        if (!timThay) System.out.println("-> Không tìm thấy sách có mã: " + maTim);
+                    }
+                    break;
+
+                case 4: // Xóa sách
+                    if (danhSachNangCao.isEmpty()) {
+                        System.out.println("Danh sách trống!");
+                    } else {
+                        System.out.print("Nhập mã sách cần xóa: ");
+                        String maXoa = sc.nextLine();
+                        boolean daXoa = false;
+                        for (int i = 0; i < danhSachNangCao.size(); i++) {
+                            if (danhSachNangCao.get(i).maSach.equalsIgnoreCase(maXoa)) {
+                                danhSachNangCao.remove(i); // Xóa bằng hàm remove của List
+                                daXoa = true;
+                                System.out.println("-> Đã xóa sách có mã: " + maXoa);
+                                break;
+                            }
+                        }
+                        if (!daXoa) System.out.println("-> Không tìm thấy sách để xóa!");
+                    }
+                    break;
+
+                case 5: // Sửa sách
+                    if (danhSachNangCao.isEmpty()) {
+                        System.out.println("Danh sách trống!");
+                    } else {
+                        System.out.print("Nhập mã sách cần sửa: ");
+                        String maSua = sc.nextLine();
+                        boolean daSua = false;
+                        for (int i = 0; i < danhSachNangCao.size(); i++) {
+                            if (danhSachNangCao.get(i).maSach.equalsIgnoreCase(maSua)) {
+                                System.out.println("-> Tìm thấy. Nhập thông tin mới:");
+                                Sach sMoi = nhapSach(sc);
+                                if (sMoi.isHopLe()) {
+                                    danhSachNangCao.set(i, sMoi); // Cập nhật bằng hàm set của List
+                                    System.out.println("-> Cập nhật thành công!");
+                                } else {
+                                    System.out.println("-> LỖI: Dữ liệu không hợp lệ. Hủy sửa!");
+                                }
+                                daSua = true;
+                                break;
+                            }
+                        }
+                        if (!daSua) System.out.println("-> Không tìm thấy sách để sửa!");
+                    }
+                    break;
+
+                case 6: // Tính tổng số lượng
+                    if (danhSachNangCao.isEmpty()) {
+                        System.out.println("Danh sách trống!");
+                    } else {
+                        int tongSLMoi = 0;
+                        for (Sach s : danhSachNangCao) {
+                            tongSLMoi += s.soLuong;
+                        }
+                        System.out.println("-> Tổng số lượng sách: " + tongSLMoi + " cuốn.");
+                    }
+                    break;
+
+                case 7: // Tính tổng giá trị
+                    if (danhSachNangCao.isEmpty()) {
+                        System.out.println("Danh sách trống!");
+                    } else {
+                        double tongGiaTriMoi = 0;
+                        for (Sach s : danhSachNangCao) {
+                            tongGiaTriMoi += s.getTongTienNhap();
+                        }
+                        System.out.printf("-> Tổng giá trị nhập kho: %,.0f VNĐ\n", tongGiaTriMoi);
+                    }
+                    break;
+
+                case 8:
+                    System.out.println("Đã thoát chương trình hoàn toàn. Tạm biệt!");
+                    break;
+
+                default:
+                    System.out.println("Lựa chọn không hợp lệ, vui lòng chọn lại!");
+            }
+        } while (luaChonMoi != 8);
+
         sc.close();
     }
 }
